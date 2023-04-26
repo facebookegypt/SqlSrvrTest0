@@ -1,4 +1,4 @@
-﻿Imports System.Data.SqlClient
+﻿Imports Microsoft.Data.SqlClient
 Public Class Connection
     Public Sub main()
         ' Create a New SqlConnectionStringBuilder And

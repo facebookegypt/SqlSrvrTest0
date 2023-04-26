@@ -79,32 +79,31 @@ Public Class Form1
             .SmallImageList = imglist
             Dim connectionString As String = ConfigurationManager.ConnectionStrings("DBConStr").ConnectionString
             Try
-                Using Con As SqlConnection = New SqlConnection(connectionString)
-                    Using Cmd As SqlCommand = New SqlCommand("FetchAcc", Con) With {.CommandType = CommandType.StoredProcedure}
-                        Con.Open()
-                        Using RDR As SqlDataReader = Cmd.ExecuteReader
-                            While RDR.Read
-                                Dim Img = CType(RDR!AccIco, Byte())
-                                Dim Mms As IO.MemoryStream = New IO.MemoryStream(Img)
-                                imglist.Images.Add(key:=RDR!AccID.ToString, image:=Image.FromStream(Mms))
-                                Mms.Flush()
-                                Dim LstItm1 As New ListViewItem With {.Text = RDR!AccName.ToString, .ImageKey = RDR!AccID.ToString}
-                                ListView1.Items.Add(LstItm1)
-                                .Font = New Font("Times New Roman", 12, FontStyle.Regular)
-                                .AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.ColumnContent)
-                                .BorderStyle = BorderStyle.None
-                                .GridLines = True
-                                .HeaderStyle = ColumnHeaderStyle.Clickable
-                                .HideSelection = False
-                                .HotTracking = False
-                                .HoverSelection = False
-                                .Padding = New Padding(3)
-                                .MultiSelect = False
-                                .Scrollable = True
-                                .Sort()
-                                .Sorting = Windows.Forms.SortOrder.Ascending
-                            End While
-                        End Using
+                Using Con As SqlConnection = New SqlConnection(connectionString),
+                    Cmd As SqlCommand = New SqlCommand("FetchAcc", Con) With {.CommandType = CommandType.StoredProcedure}
+                    Con.Open()
+                    Using RDR As SqlDataReader = Cmd.ExecuteReader
+                        While RDR.Read
+                            Dim Img = CType(RDR!AccIco, Byte())
+                            Dim Mms As IO.MemoryStream = New IO.MemoryStream(Img)
+                            imglist.Images.Add(key:=RDR!AccID.ToString, image:=Image.FromStream(Mms))
+                            Mms.Flush()
+                            Dim LstItm1 As New ListViewItem With {.Text = RDR!AccName.ToString, .ImageKey = RDR!AccID.ToString}
+                            ListView1.Items.Add(LstItm1)
+                            .Font = New Font("Times New Roman", 12, FontStyle.Regular)
+                            .AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.ColumnContent)
+                            .BorderStyle = BorderStyle.None
+                            .GridLines = True
+                            .HeaderStyle = ColumnHeaderStyle.Clickable
+                            .HideSelection = False
+                            .HotTracking = False
+                            .HoverSelection = False
+                            .Padding = New Padding(3)
+                            .MultiSelect = False
+                            .Scrollable = True
+                            .Sort()
+                            .Sorting = Windows.Forms.SortOrder.Ascending
+                        End While
                     End Using
                 End Using
             Catch ex As SqlException
