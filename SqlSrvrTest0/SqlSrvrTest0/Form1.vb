@@ -15,22 +15,11 @@ Public Class Form1
         End If
         Dim connectionString As String = ConfigurationManager.ConnectionStrings("DBConStr").ConnectionString
         Try
-            Using Con As SqlConnection = New SqlConnection(connectionString)
-                Using SqlCommand As SqlCommand = New SqlCommand("SaveAcc", Con) With {.CommandType = CommandType.StoredProcedure}
-                    Dim AccNm As String = NmTxt.Text
-                    Dim Dt1 As Date = Now.Date
-                    With SqlCommand.Parameters
-                        .Add(New SqlParameter("@Acc1", AccNm))
-                        .Add(New SqlParameter("@Acc2", Img2Byte))
-                        .Add(New SqlParameter("@Acc3", Dt1))
-                        .Add(New SqlParameter("@Acc4", Dt1))
-                    End With
-                    ToolStripLabel1.ForeColor = Color.Green
-                    Con.Open()
-                    ToolStripLabel1.Text = ("Saved " & SqlCommand.ExecuteNonQuery())
-                    Call PictureBox2_Click(sender, e)
-                End Using
-            End Using
+            Dim NewAcc As Accs = New Accs
+            Dim N As Integer = NewAcc.AddNewAccount(NmTxt.Text, Img2Byte)
+            Call PictureBox2_Click(sender, e)
+            ToolStripLabel1.ForeColor = Color.Green
+            ToolStripLabel1.Text = ("Saved " & N.ToString)
         Catch ex As SqlException
             ToolStripLabel1.ForeColor = Color.Red
             ToolStripLabel1.Text = ("Not Saved!")
@@ -38,7 +27,7 @@ Public Class Form1
         End Try
 
     End Sub
-    Function Img2Byte()
+    Function Img2Byte() As Byte()
         If IsNothing(PictureBox1.Image) Then
             PictureBox1.Image = My.Resources.Clipboard
         End If
