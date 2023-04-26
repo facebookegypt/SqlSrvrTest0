@@ -51,7 +51,7 @@ Public Class Form1
             End With
             Try
                 If OFD.ShowDialog = DialogResult.OK Then
-                    UrlImg = Bitmap.FromFile(OFD.FileName)
+                    UrlImg = CType(Bitmap.FromFile(OFD.FileName), Bitmap)
                     If UrlImg.Size.Width > 32 AndAlso UrlImg.Height > 32 Then
                         MsgBox("images maximum size is 32 x 32.")
                         Exit Sub
@@ -88,7 +88,7 @@ Public Class Form1
                                 Dim Mms As IO.MemoryStream = New IO.MemoryStream(Img)
                                 imglist.Images.Add(key:=RDR!AccID.ToString, image:=Image.FromStream(Mms))
                                 Mms.Flush()
-                                Dim LstItm1 As New ListViewItem With {.Text = RDR!AccName, .ImageKey = RDR!AccID.ToString}
+                                Dim LstItm1 As New ListViewItem With {.Text = RDR!AccName.ToString, .ImageKey = RDR!AccID.ToString}
                                 ListView1.Items.Add(LstItm1)
                                 .Font = New Font("Times New Roman", 12, FontStyle.Regular)
                                 .AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.ColumnContent)
@@ -144,8 +144,8 @@ Public Class Form1
                     Using Rdr As SqlDataReader = SqlCommand.ExecuteReader
                         If Rdr.HasRows Then
                             While Rdr.Read
-                                NmTxt.Text = Rdr!AccName
-                                Dim Data As Byte() = (Rdr!AccIco)
+                                NmTxt.Text = Rdr!AccName.ToString
+                                Dim Data As Byte() = CType((Rdr!AccIco), Byte())
                                 Dim ms As New IO.MemoryStream(Data)
                                 PictureBox1.Image = Image.FromStream(ms)
                                 ms.Flush()
@@ -175,7 +175,7 @@ Public Class Form1
                     Using Rdr1 As SqlDataReader = SqlCommand1.ExecuteReader
                         If Rdr1.HasRows Then
                             While Rdr1.Read
-                                ComboItms.Add(Rdr1!ID, Rdr1!LoginNm.ToString)
+                                ComboItms.Add(CInt((Rdr1!ID)), Rdr1!LoginNm.ToString)
                             End While
                         Else
                             SqlCommand1.Dispose()
