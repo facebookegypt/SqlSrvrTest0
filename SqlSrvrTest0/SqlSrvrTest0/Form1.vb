@@ -135,6 +135,7 @@ Public Class Form1
         DelBtn.Enabled = False
         FindBtn.Enabled = False
         ListView1.Clear()
+        ComboBox1.DataSource = Nothing
     End Sub
     Private Sub ListView1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListView1.SelectedIndexChanged
         Dim ThisAccID As Integer
@@ -198,6 +199,7 @@ Public Class Form1
                 ComboBox1.DataSource = New BindingSource(ComboItms, Nothing)
                 ComboBox1.ValueMember = "Key"
                 ComboBox1.DisplayMember = "Value"
+                Call ClrBtn1_Click(sender, e)
             End Using
         Catch ex As SqlException
             ToolStripLabel1.ForeColor = Color.Red
