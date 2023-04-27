@@ -13,7 +13,6 @@ Public Class Form1
             NmTxt.Focus()
             Exit Sub
         End If
-        Dim connectionString As String = ConfigurationManager.ConnectionStrings("DBConStr").ConnectionString
         Try
             Dim NewAcc As Accs = New Accs
             Dim N As Integer = NewAcc.AddNewAccount(NmTxt.Text, Img2Byte)
@@ -25,7 +24,6 @@ Public Class Form1
             ToolStripLabel1.Text = ("Not Saved!")
             MsgBox(ex.Message)
         End Try
-
     End Sub
     Function Img2Byte() As Byte()
         If IsNothing(PictureBox1.Image) Then
@@ -234,21 +232,11 @@ Public Class Form1
     Private Sub EditBtn_Click(sender As Object, e As EventArgs) Handles EditBtn.Click
         Dim AccID1 As Integer = Nothing
         Integer.TryParse(ListView1.FocusedItem.ImageKey, AccID1)
-        Dim connectionString As String = ConfigurationManager.ConnectionStrings("DBConStr").ConnectionString
         Try
-            Using Con As SqlConnection = New SqlConnection(connectionString)
-                Using SqlCommand As SqlCommand = New SqlCommand("UpdateAccByID", Con) With {.CommandType = CommandType.StoredProcedure}
-                    With SqlCommand.Parameters
-                        .Add(New SqlParameter("@AccID", AccID1))
-                        .Add(New SqlParameter("@AccIco1", Img2Byte))
-                        .Add(New SqlParameter("@Dt1", Now.Date))
-                        .Add(New SqlParameter("@AccNm1", NmTxt.Text))
-                    End With
-                    ToolStripLabel1.ForeColor = Color.Green
-                    Con.Open()
-                    ToolStripLabel1.Text = ("Updated " & SqlCommand.ExecuteNonQuery)
-                End Using
-            End Using
+            Dim NewAcc As Accs = New Accs
+            Dim N As Integer = NewAcc.EditAccount(AccID1, NmTxt.Text, Img2Byte)
+            ToolStripLabel1.ForeColor = Color.Green
+            ToolStripLabel1.Text = ("Updated " & N.ToString)
         Catch ex As SqlException
             ToolStripLabel1.ForeColor = Color.Red
             ToolStripLabel1.Text = ("Not Updaed!")
@@ -272,11 +260,15 @@ Public Class Form1
             UsrTxt.Focus()
             Exit Sub
         End If
+        If ListView1.FocusedItem Is Nothing Then
+            ToolStripLabel1.ForeColor = Color.Red
+            ToolStripLabel1.Text = ("Choose an Account first.")
+        End If
+        Dim AccID1 As Integer = Convert.ToInt32(ListView1.FocusedItem.ImageKey)
         Dim connectionString As String = ConfigurationManager.ConnectionStrings("DBConStr").ConnectionString
         Try
             Using Con As SqlConnection = New SqlConnection(connectionString)
                 Using SqlCommand As SqlCommand = New SqlCommand("SaveLogin", Con) With {.CommandType = CommandType.StoredProcedure}
-                    Dim AccID1 As Integer = Convert.ToInt32(ListView1.FocusedItem.ImageKey)
                     Dim LoginNm1 As String
                     If Len(UsrTxt.Text) <= 0 Then
                         ToolStripLabel1.ForeColor = Color.Red
@@ -303,7 +295,7 @@ Public Class Form1
                     With SqlCommand.Parameters
                         .Add(New SqlParameter("@AccID1", AccID1))
                         .Add(New SqlParameter("@LoginNm1", LoginNm1))
-                        .Add(New SqlParameter("@LoginPwd1", loginPwd1))
+                        .Add(New SqlParameter("@LoginPwd1", LoginPwd1))
                         .Add(New SqlParameter("@Notes", Notes1))
                         .Add(New SqlParameter("@DtCtrtd1", Now.Date))
                     End With
@@ -375,28 +367,12 @@ Public Class Form1
         Else
             Exit Sub
         End If
-        Dim connectionString As String = ConfigurationManager.ConnectionStrings("DBConStr").ConnectionString
-        Dim Tra As SqlTransaction = Nothing
         Try
-            Using Con As SqlConnection = New SqlConnection(connectionString)
-                Con.Open()
-                Tra = Con.BeginTransaction(IsolationLevel.ReadCommitted)
-                Dim SqlCommand As SqlCommand = New SqlCommand("DelFrmAccByID", Con, Tra) With {.CommandType = CommandType.StoredProcedure}
-                With SqlCommand.Parameters
-                    .Add(New SqlParameter("@AccID1", ThisAccID))
-                End With
-                SqlCommand.ExecuteNonQuery()
-                SqlCommand = New SqlCommand("DelFrmLogByID", Con, Tra) With {.CommandType = CommandType.StoredProcedure}
-                With SqlCommand.Parameters
-                    .Add(New SqlParameter("@AccID1", ThisAccID))
-                End With
-                SqlCommand.ExecuteNonQuery()
-                ToolStripLabel1.ForeColor = Color.Green
-                ToolStripLabel1.Text = ("Account and Logins Deleted.")
-                Tra.Commit()
-            End Using
+            Dim NewAcc As Accs = New Accs
+            Dim N As Integer = NewAcc.DelAccount(ThisAccID, NmTxt.Text, Img2Byte)
+            ToolStripLabel1.ForeColor = Color.Green
+            ToolStripLabel1.Text = ("Account and Logins Deleted." & N.ToString)
         Catch ex As SqlException
-            Tra.Rollback()
             ToolStripLabel1.ForeColor = Color.Red
             ToolStripLabel1.Text = ("Not Updaed!")
             MsgBox(ex.Message)

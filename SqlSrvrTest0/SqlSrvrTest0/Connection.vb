@@ -10,9 +10,6 @@ Public Class Connection
         ' Server key, but the New connection string uses
         ' the well-known Data Source key instead.
         Debug.WriteLine(builder.ConnectionString)
-
-
-
         ' You can refer to connection keys using strings, 
         ' as well. When you use this technique (the default
         ' Item property in Visual Basic, Or the indexer in C#),
