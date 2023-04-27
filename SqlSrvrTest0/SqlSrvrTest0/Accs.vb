@@ -1,4 +1,4 @@
-﻿Imports System.Data.SqlClient
+﻿Imports Microsoft.Data.SqlClient
 Imports System.Configuration
 Public Class Accs
     Public Function AddNewAccount(ByVal AccNm As String, ByVal Img2Byte As Byte()) As Integer

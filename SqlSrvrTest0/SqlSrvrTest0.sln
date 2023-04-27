@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "SqlSrvrTest0", "SqlSrvrTest0\SqlSrvrTest0.vbproj", "{FFFE8FE1-616B-48EF-B24A-080FB6728104}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "SupportLibrary", "SupportLibrary\SupportLibrary.vbproj", "{93C5080E-8EA3-4EC6-8329-86CF021C5254}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "LoginLibrary", "LoginLibrary\LoginLibrary.vbproj", "{B4C86C64-B342-4CA6-A39D-B5892CCB14D2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{FFFE8FE1-616B-48EF-B24A-080FB6728104}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FFFE8FE1-616B-48EF-B24A-080FB6728104}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FFFE8FE1-616B-48EF-B24A-080FB6728104}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93C5080E-8EA3-4EC6-8329-86CF021C5254}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93C5080E-8EA3-4EC6-8329-86CF021C5254}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93C5080E-8EA3-4EC6-8329-86CF021C5254}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93C5080E-8EA3-4EC6-8329-86CF021C5254}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4C86C64-B342-4CA6-A39D-B5892CCB14D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4C86C64-B342-4CA6-A39D-B5892CCB14D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4C86C64-B342-4CA6-A39D-B5892CCB14D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4C86C64-B342-4CA6-A39D-B5892CCB14D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,20 +1,53 @@
-﻿Public Class LoginForm1
+﻿Imports LoginLibrary.DataClasses
+Imports LoginLibrary.SecurityClasses
 
-    ' TODO: Insert code to perform custom authentication using the provided username and password 
-    ' (See http://go.microsoft.com/fwlink/?LinkId=35339).  
-    ' The custom principal can then be attached to the current thread's principal as follows: 
-    '     My.User.CurrentPrincipal = CustomPrincipal
-    ' where CustomPrincipal is the IPrincipal implementation used to perform authentication. 
-    ' Subsequently, My.User will return identity information encapsulated in the CustomPrincipal object
-    ' such as the username, display name, etc.
-
-    Private Sub OK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK.Click
-        Close()
+Public Class LoginForm1
+    ''' <summary>
+    ''' Toggle visibility of password
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged
+        If CheckBox1.Checked Then
+            PasswordTextBox.PasswordChar = "*"c
+        Else
+            PasswordTextBox.PasswordChar = ControlChars.NullChar
+        End If
     End Sub
-    Private Sub Cancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel.Click
-        Close()
-    End Sub
-    Private Sub LoginForm1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    ''' <summary>
+    ''' Perform login
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub OK_Click(sender As Object, e As EventArgs) Handles OK.Click
 
+        If Not String.IsNullOrWhiteSpace(UsernameTextBox.Text) AndAlso Not String.IsNullOrWhiteSpace(PasswordTextBox.Text) Then
+
+            Dim ops = New DatabaseUser("evry1falls", "Accounts")
+            Dim tester = New Encryption
+
+            ' encrypt user name and password
+            Dim userNameBytes = tester.Encrypt(UsernameTextBox.Text, "111")
+            Dim passwordBytes = tester.Encrypt(PasswordTextBox.Text, "111")
+
+            Dim results = ops.Login(userNameBytes, passwordBytes)
+
+            '
+            ' Login recognized (does not know if the user has proper permissions to the tables at this point)
+            '
+            If results.Success Then
+                Hide()
+                Dim mainForm As New Form1(userNameBytes, passwordBytes)
+                mainForm.ShowDialog()
+            Else
+                MessageBox.Show(results.Message)
+            End If
+        Else
+            MessageBox.Show("Incomplete information to continue.")
+        End If
+    End Sub
+
+    Private Sub Cancel_Click(sender As Object, e As EventArgs) Handles Cancel.Click
+        Close()
     End Sub
 End Class

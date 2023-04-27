@@ -2,6 +2,13 @@
 Imports System.Configuration
 
 Public Class Form1
+    Private userNameBytes As Byte()
+    Private userPasswordBytes As Byte()
+    Public Sub New(pNameBytes As Byte(), pPasswordBytes As Byte())
+        InitializeComponent()
+        userNameBytes = pNameBytes
+        userPasswordBytes = pPasswordBytes
+    End Sub
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         KeyPreview = True
         StartPosition = FormStartPosition.CenterScreen
@@ -403,5 +410,8 @@ Public Class Form1
             ToolStripLabel1.Text = ("Not Updaed!")
             MsgBox(ex.Message)
         End Try
+    End Sub
+    Private Sub Form1_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
+        LoginForm1.Show()
     End Sub
 End Class
