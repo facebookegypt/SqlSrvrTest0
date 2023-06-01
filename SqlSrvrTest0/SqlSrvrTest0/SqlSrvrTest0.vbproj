@@ -243,7 +243,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Accs.vb" />
-    <Compile Include="Connection.vb" />
     <Compile Include="Form1.vb">
       <SubType>Form</SubType>
     </Compile>
